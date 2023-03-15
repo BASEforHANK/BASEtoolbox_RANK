@@ -9,8 +9,8 @@
 # Plot IRFs
 ###############################################################################################
 function plot_irfs(IRFs, SHOCKs, select_variables, nice_var_names, nice_s_names, horizon, model_names::Array{String}, n_plotcol; savepdf = false, suffix="")
-    styles = [:solid :dash  :dashdot :dashdotdot :dot :dash :solid]
-    colorlist = [:black, :firebrick1, :blue, :green, :orange, :purple, :yellow]
+    styles = [:solid :dash :dashdot :dashdotdot :dot :dash :solid]
+    colorlist = [ :black, :blue, :firebrick1, :green, :orange, :purple, :yellow]
     pvec = Vector{Plots.Plot{Plots.GRBackend}}(undef, length(SHOCKs))
     counts = 0
     for s in SHOCKs
@@ -75,11 +75,8 @@ function plot_irfs(IRFs, SHOCKs, select_variables, nice_var_names, nice_s_names,
                         )
     end
     if savepdf
-        # for j = 1:length(SHOCKs)
-        #     pvec[j] |> save(string("8_PostEstimation/Figures/IRFs/IRFs_to_", SHOCKs[j],suffix, ".pdf"))
-        # end
-        for j = 1:length(SHOCKs)
-            Plots.pdf(pvec[j], string("8_PostEstimation/Figures/IRFs/IRFs_to_", SHOCKs[j],suffix, ".pdf"))
+        for j = eachindex(SHOCKs)
+            savefig(pvec[j],string("8_PostEstimation/Figures/IRFs/IRFs_to_", SHOCKs[j],suffix, ".pdf"))
         end
     end
     display.(pvec)

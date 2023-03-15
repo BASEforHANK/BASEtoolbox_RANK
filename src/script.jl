@@ -99,10 +99,15 @@ using Plots, VegaLite, DataFrames, FileIO, StatsPlots, CategoricalArrays, Flatte
 # variables to be plotted
 select_variables = [:Ygrowth, :Cgrowth, :Igrowth, :N, :wgrowth, :RB, :π]
 
-model_names = ["RANK"] # Displayed names of models to be compared
+# models to be plotted
+number_models  = 2
+model_names    = Array{String}(undef,1,number_models)
+model_names[1] = "RANK Mode"
+model_names[2] = "RANK Posterior"
 
 # enter here the models, as tupel of tupels (sr, lr, e_set, m_par), to be compared
 models_tupel = (
+        (sr_mode, lr_mode, e_set, m_par_mode),
         (sr_mc, lr_mc, e_set, m_par_mc),
         )
 
@@ -124,7 +129,7 @@ IRFs_plot = plot_irfs(IRFs, SHOCKs, select_variables, nice_var_names, nice_s_nam
 
 # export Variance Decompositions as DataFrames and Plot using VegaLite
 DF_V_Decomp = plot_vardecomp(VDs, VD_bc_s, select_vd_horizons, model_names, SHOCKs,
-        select_variables; savepdf=true, suffix="_nolegend", legend_switch=false) 
+        select_variables; savepdf=true, suffix="_nolegend", legend_switch=true) 
 
 # produce historical contributions as Array and Data Frame and plot p
 Historical_contrib, DF_H_Decomp, HD_plot = compute_hist_decomp(sr_mc, lr_mc, e_set, m_par_mc,
